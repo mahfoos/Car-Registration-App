@@ -58,9 +58,9 @@ const App = () => {
 
         const newCars = oldCars.concat(newCar);
 
-        if(brand === "" || model === "" || year === "" || horsePower === ""){
+        if (brand === "" || model === "" || year === "" || horsePower === "") {
             alert("Fields cannot be blank")
-        }else{
+        } else {
             const newCars = oldCars.concat(newCar);
 
         }
@@ -71,11 +71,19 @@ const App = () => {
         setModel("");
         setYear("");
         setHorsePower("");
-    }
+    };
+
+    const deleteCarHandler = (id) => {
+        const oldCars = [...cars];
+        const newCars = oldCars.filter((car) => car.id !== id);
+        setCars(newCars);
+
+
+    };
 
     return (
         <div className={classes.app}>
-            <h1 className={classes.heading}>Vehicle Registration Application </h1>
+            <h1 className={classes.heading}>Car Registration Application </h1>
             <TextField
                 id="outlined-basic"
                 label="Brand"
@@ -117,7 +125,7 @@ const App = () => {
                 className={classes.button}
                 onClick={addCarHandler}
             >
-                Secondary
+                Register Car
             </Button>
 
             <Table className={classes.table} aria-label="simple table">
@@ -130,8 +138,8 @@ const App = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {cars.map((car, id) => (
-                        <TableRow key={id}>
+                    {cars.map((car, index) => (
+                        <TableRow key={index} onClick={() => deleteCarHandler(car.id)}>
                             <TableCell>{car.brand}</TableCell>
                             <TableCell align="center">{car.model}</TableCell>
                             <TableCell align="center">{car.year}</TableCell>
