@@ -41,7 +41,7 @@ const App = () => {
     const [model, setModel] = useState("");
     const [year, setYear] = useState("");
     const [horsePower, setHorsePower] = useState("");
-
+    const [isValid, setIsValid] = useState(false);
 
     const classes = useStyles();
 
@@ -59,13 +59,17 @@ const App = () => {
         const newCars = oldCars.concat(newCar);
 
         if (brand === "" || model === "" || year === "" || horsePower === "") {
-            alert("Fields cannot be blank")
+            alert("Fields cannot be blank");
+            setIsValid(true);
         } else {
-            const newCars = oldCars.concat(newCar);
+            setIsValid(false);
+
 
         }
 
         setCars(newCars);
+
+        localStorage.setItem("cars",JSON.stringify(newCars));
 
         setBrands("");
         setModel("");
@@ -77,9 +81,12 @@ const App = () => {
         const oldCars = [...cars];
         const newCars = oldCars.filter((car) => car.id !== id);
         setCars(newCars);
-
-
     };
+
+    useEffect(() => {
+        const localStorageCars = JSON.parse(localStorage.getItem("cars"));
+        setCars(localStorageCars);
+    },[setCars]);
 
     return (
         <div className={classes.app}>
@@ -91,6 +98,7 @@ const App = () => {
                 className={classes.textField}
                 onChange={(e) => setBrands(e.target.value)}
                 value={brand}
+                error={isValid}
             />
             <TextField
                 id="outlined-basic"
@@ -99,6 +107,7 @@ const App = () => {
                 className={classes.textField}
                 onChange={(e) => setModel(e.target.value)}
                 value={model}
+                error={isValid}
 
             />
             <TextField
@@ -108,6 +117,7 @@ const App = () => {
                 className={classes.textField}
                 onChange={(e) => setYear(e.target.value)}
                 value={year}
+                error={isValid}
 
             />
             <TextField
@@ -117,6 +127,7 @@ const App = () => {
                 className={classes.textField}
                 onChange={(e) => setHorsePower(e.target.value)}
                 value={horsePower}
+                error={isValid}
 
             />
             <Button
